@@ -1,0 +1,4 @@
+nanohttp
+restfulpy
+pytest
+pytest-pudb
