@@ -1,6 +1,7 @@
+
 from nanohttp import RegexRouteController, json
 
-from tests.helper import alfacoins_mockup_gateway
+from .helper import alfacoins_mockup_gateway
 
 
 class Root(RegexRouteController):
@@ -12,6 +13,7 @@ class Root(RegexRouteController):
     @json(verbs=['get'])
     def get_rates(self):
         return GET_RATES_RESPONSE
+
 
 def test_get_rates():
     with alfacoins_mockup_gateway(Root()) as gateway:
