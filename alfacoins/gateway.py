@@ -38,11 +38,9 @@ class ALFACoins:
             params=params,
             json=json_data
         )
-        return json.loads(response.content if response.content else None), \
-            response.status_code
+        return response.content.decode('utf-8') ,response.status_code
 
     def request(self, method, uri, params=dict(), json_data=dict()):
-
         if self._is_authenticated:
             json_data.update(
                 name=self.name,
@@ -58,7 +56,10 @@ class ALFACoins:
         )
 
         if 500 <= status_code < 600:
-            raise ServerException()
+            raise ServerException(result)
+
+        if status_code == 200:
+            result = json.loads(result)
 
         if status_code != 200 or 'error' in result:
             raise APIException(
@@ -72,7 +73,7 @@ class ALFACoins:
         return self.request('GET', 'rates')
 
     def get_rate(self, pair):
-        return self.request('GET', f'rate/{pair}')[0]
+        return self.request('GET', f'rate/{pair}')
 
     def get_fees(self):
         return self.request('GET', 'fees')
@@ -92,7 +93,7 @@ class ALFACoins:
             reference=reference
         )
 
-        return int(self.request('POST', 'bitsend', json_data=data))
+        return int(self.request('POST', 'bitsend', json_data=data)['id'])
 
     def bitsend_status(self, bitsend_id):
         return self.request(
@@ -119,7 +120,11 @@ class ALFACoins:
     def statistics(self):
         return self.request('POST', 'stats')
 
-    def refund(self, txn_id, options, amount=None, new_rate=False):
+    def refund(self, txn_id, options={}, address='', amount=None,
+               new_rate=False):
+        if not address and not options:
+            raise KeyError('One of options or address is requierd')
+
         data = dict(
             txn_id=txn_id,
             options=options,

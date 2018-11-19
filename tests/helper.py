@@ -1,28 +1,18 @@
 from contextlib import contextmanager
+from urllib.parse import urljoin
 
-from nanohttp import RegexRouteController, json, settings, context, \
-    HTTPStatus, Application, configure
+from alfacoins import ALFACoins
+from nanohttp import Application
 from restfulpy.mockup import mockup_http_server
 
 
-test_server_url = None
-
-
 @contextmanager
-def alfacoins_mockup_server():
-    class Root(RegexRouteController):
-
-        def __init__(self):
-            super().__init__([
-                ('/api/rates', self.get_rates),
-            ])
-
-        @json(verbs=['get'])
-        def get_rates(self):
-            return GET_RATES_RESPONSE
-
-    app = Application(Root())
+def alfacoins_mockup_gateway(root_controller):
+    app = Application(root_controller)
     with mockup_http_server(app) as (server, url):
-        global test_server_url
-        test_server_url = url
-        yield app
+        yield ALFACoins(
+            name='test-shop',
+            password='abcdefgh',
+            secret_key='d53974471e9b555554f5c318e07e9f23',
+            base_url=urljoin(url, '/api/'),
+        )
