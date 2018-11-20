@@ -71,7 +71,7 @@ alfacoins = ALFACoins(
 )
 ```
 
-#### Create order
+### Create order
 
 ```python3
 result = alfacoins.create_order(
