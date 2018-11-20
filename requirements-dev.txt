@@ -1,3 +1,5 @@
 restfulpy
-pytest
+coverage
+coveralls
 pytest-pudb
+pytest-cov
