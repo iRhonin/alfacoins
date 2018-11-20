@@ -15,6 +15,6 @@ addons:
       - libpq-dev
 
 install: ./scripts/travis-install.sh
-script: py.test --cov=alfacoins alfacoins
+script: py.test --cov=alfacoins
 after_success: 
   - travis_retry coveralls
