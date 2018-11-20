@@ -21,9 +21,24 @@ setup(
     version=package_version,
     author="Arash Fatahzadea",
     author_email="arash.fattahzade@carrene.com",
-    description="Alfacoins API library",
-    url='https://github.com/Carrene/owl.git://github.com/ArashFatahzade/alfacoins',
+    description="ALFACoins API library",
+    url='https://github.com/Carrene/owl.git://github.com/ArashFatahzade'
+        '/alfacoins',
     install_requires=dependencies,
     packages=find_packages(),
     test_suite="tests",
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Customer Service',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: MacOS',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Software Development',
+        'Topic :: Topic :: Software Development '
+            ':: Libraries :: Python Modules',
+
+    ],
 )
