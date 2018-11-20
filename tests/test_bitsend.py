@@ -1,4 +1,5 @@
 from nanohttp import RegexRouteController, json
+import pytest
 
 from .helper import alfacoins_mockup_gateway
 
@@ -25,6 +26,15 @@ def test_bitsend():
             reference=1,
         )
         assert bitsend_id == 1
+
+        with pytest.raises(TypeError):
+            gateway.bitsend(
+                type='bitcoin',
+                recipient_name='test_client',
+                options={'address': '3P3QsMVK89JBNqZQv5zMAKG8FK3kJM4rjt'},
+                recipient_email='abc@abc.com',
+                reference=1,
+           )
 
 
 BITSEND_RESPONSE = {'id': '1'}
