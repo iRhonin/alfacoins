@@ -4,6 +4,9 @@ A Python3.6 wapper aournd the [ALFACoins](https://www.alfacoins.com/) [APIs](htt
  
 by [Carrene](https://github.com/Carrene).
 
+[![Build Status](https://travis-ci.com/ArashFatahzade/alfacoins.svg?branch=master)](https://travis-ci.com/ArashFatahzade/alfacoins)
+[![Coverage Status](https://coveralls.io/repos/github/ArashFatahzade/alfacoins/badge.svg?branch=master)](https://coveralls.io/github/ArashFatahzade/alfacoins?branch=master)
+
 ## Description
 
 **alfacoins** is a Python3.6 Library for interacting with [ALFAcoins API](https://www.alfacoins.com/developers).
