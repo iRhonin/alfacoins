@@ -86,6 +86,39 @@ class ALFACoins:
         """
         Get rate for all available pairs
         
+        :returns: {
+            "BTC": [
+              {
+                "code": "USD",
+                "rate": 628.54
+              },
+              {
+                "code": "EUR",
+                "rate": 579.940948
+              }
+            ],
+            "LTC": [
+              {
+                "code": "USD",
+                "rate": 3.76613
+              },
+              {
+                "code": "EUR",
+                "rate": 3.474931
+              }
+            ],
+            "ETH": [
+              {
+                "code": "USD",
+                "rate": 12
+              },
+              {
+                "code": "EUR",
+                "rate": 11.072154
+              }
+            ]
+        }
+        
         :raises ServerException: Internal server error
         """
         return self._request('GET', 'rates')
@@ -96,6 +129,8 @@ class ALFACoins:
 
         :param pair: Cryptocurrency and fiat Pair
         
+        :returns: ["628.51000000"]
+
         :raises ServerException: Internal server error
         :raises APIException: Invalid pair
 
@@ -105,6 +140,23 @@ class ALFACoins:
     def get_fees(self):
         """
         Get all gate fees for deposit and withdrawal
+
+        :returns: {
+            "bitcoin": {
+                "deposit": {
+                    "commission": "0.99%",
+                    "network_fee": "0 BTC"
+                },
+                "withdrawal": {
+                    "commission": "0%",
+                    "network_fee": "0.00011 BTC"
+                },
+                "bitsend": {
+                    "commission": "0.99%",
+                    "network_fee": "0.00011 BTC"
+                }
+            }
+        }
 
         :raises ServerException: Internal server error
         """
@@ -134,9 +186,14 @@ class ALFACoins:
         :param recipient_name: Client Name (for email notification)
         :param recipient_email: Client email (for email notification)
         :param reference: Deposit description (for client notification)   
-        
+       
+        :returns: {
+            "id": "1"
+        }
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
+
         """
         if amount is None and coin_amount is None:
             raise TypeError('One of amount or coin_amount must be passed')
@@ -158,6 +215,14 @@ class ALFACoins:
 
         :params bitsend_id: (int) Bitsend ID
         
+        :returns: {
+            "status": "paid",
+            "coin_amount": "0.40803893",
+            "rate": "6000",
+            "type": "bitcoin",
+            "txid": "4cac7b450831fadd8c6921a6549832cb2b954c97ce45daa19306c0de259cdf86"
+        }
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -181,7 +246,20 @@ class ALFACoins:
                      payment is made by a customer]",
                 "payerName": "[Customer's name for notification]",
                 "payerEmail": "[Customer's email for notification]"
-            }        
+            }
+        
+        :returns: {
+            'id': '1',
+            'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
+            'deposit': {
+                'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
+                'destination_tag': '1294967290',
+            },
+            'coin_amount': '1.234',
+            'url': 'test-url',
+            'iframe': 'test-url'
+        }
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -201,6 +279,24 @@ class ALFACoins:
 
         :param txn_id: ALFAcoins TXN ID
         
+        :returns: {
+            'status': 'paid',
+            'deposit': {
+                'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
+                'destination_tag': '1294967290',
+            },
+            'coin_requested_amount': '1.23',
+            'requested_amount': '12.3',
+            'amount': '1.2',
+            'rate': '10',
+            'coin_amount': '10',
+            'currency': 'USD',
+            'type': 'bitcoin',
+            'date': '2018-11-11T13:54:06.127610',
+            'url': 'test-url',
+            'iframe': 'test-url'
+        }
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -209,7 +305,21 @@ class ALFACoins:
     def statistics(self):
         """
         Merchant's volume and balance statistics
-        
+                
+        :returns: {
+            'balances':{
+                'BCH':'0.00000000',
+                'BTC':'0.00000000',
+                'DASH':'0.00000000',
+                'ETH':'0.00000000',
+                'LTC':'0.00000000',
+                'LTCT':'0.00001188',
+                'XRP':'0.00000000'
+            },
+            'volume':1.2,
+            'pending':0
+        }
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -238,7 +348,9 @@ class ALFACoins:
             less Order amount, If omitted full amount will be refunded
         :param new_rate: (Optional) Use current time rates for fiat to
             cryptocurrency conversion or use order's rate
-        
+                        
+        :returns: {'result': 'Refund is pending'}
+
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -252,4 +364,3 @@ class ALFACoins:
             new_rate=new_rate
         )
         return self._request('POST', 'refund', json_data=data)
-
