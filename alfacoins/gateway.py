@@ -85,6 +85,8 @@ class ALFACoins:
     def get_rates(self):
         """
         Get rate for all available pairs
+        
+        :raises ServerException: Internal server error
         """
         return self._request('GET', 'rates')
 
@@ -93,12 +95,18 @@ class ALFACoins:
         Get rate for pair
 
         :param pair: Cryptocurrency and fiat Pair
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Invalid pair
+
         """
         return self._request('GET', f'rate/{pair}')
 
     def get_fees(self):
         """
         Get all gate fees for deposit and withdrawal
+
+        :raises ServerException: Internal server error
         """
         return self._request('GET', 'fees')
 
@@ -125,7 +133,10 @@ class ALFACoins:
             (optional)
         :param recipient_name: Client Name (for email notification)
         :param recipient_email: Client email (for email notification)
-        :param reference: Deposit description (for client notification)
+        :param reference: Deposit description (for client notification)   
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
         """
         if amount is None and coin_amount is None:
             raise TypeError('One of amount or coin_amount must be passed')
@@ -146,6 +157,9 @@ class ALFACoins:
         BitSend status primary use to get information of bitsend payout
 
         :params bitsend_id: (int) Bitsend ID
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
         """
         return self._request(
             'POST',
@@ -161,13 +175,15 @@ class ALFACoins:
         :param order_id: Merchant's Order ID
         :param description: (Optional) Description for order
         :param options: (Optional) Array {
-            "notificationURL": "[custom Merchant's URL for paymentnotification]
-            ",
-            "redirectURL": "[Merchant's page which is shown after
-                 payment is made by a customer]",
-            "payerName": "[Customer's name for notification]",
-            "payerEmail": "[Customer's email for notification]"
-        }
+                "notificationURL": "[custom Merchant's URL for paymentnotification]
+                ",
+                "redirectURL": "[Merchant's page which is shown after
+                     payment is made by a customer]",
+                "payerName": "[Customer's name for notification]",
+                "payerEmail": "[Customer's email for notification]"
+            }        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
         """
         data = dict(
             type=type,
@@ -184,10 +200,20 @@ class ALFACoins:
         Get status of created Order
 
         :param txn_id: ALFAcoins TXN ID
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
         """
         return self._request('POST', 'status', json_data=dict(txn_id=txn_id))
 
     def statistics(self):
+        """
+        Merchant's volume and balance statistics
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
+        """
+        
         return self._request('POST', 'stats')
 
     def refund(self, txn_id, options={}, address='', amount=None,
@@ -208,10 +234,13 @@ class ALFACoins:
                     "address": "rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6",
                     "destination_tag": "1294967290"
                 } for XRP
-                :param amount: (Optional) Amount to refund, must be
-                    less Order amount, If omitted full amount will be refunded
-                :param new_rate: (Optional) Use current time rates for fiat to
-                    cryptocurrency conversion or use order's rate
+        :param amount: (Optional) Amount to refund, must be
+            less Order amount, If omitted full amount will be refunded
+        :param new_rate: (Optional) Use current time rates for fiat to
+            cryptocurrency conversion or use order's rate
+        
+        :raises ServerException: Internal server error
+        :raises APIException: Related error message
         """
         if not address and not options:
             raise KeyError('One of options or address is requierd')
