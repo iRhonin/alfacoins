@@ -78,14 +78,14 @@ class ALFACoins:
             raise APIException(
                 result['error']
                 if status_code == 200
-                else result[0])
+                else result)
 
         return result
 
     def get_rates(self):
         """
         Get rate for all available pairs
-        
+
         :returns: {
             "BTC": [
               {
@@ -118,7 +118,7 @@ class ALFACoins:
               }
             ]
         }
-        
+
         :raises ServerException: Internal server error
         """
         return self._request('GET', 'rates')
@@ -128,7 +128,7 @@ class ALFACoins:
         Get rate for pair
 
         :param pair: Cryptocurrency and fiat Pair
-        
+
         :returns: ["628.51000000"]
 
         :raises ServerException: Internal server error
@@ -141,7 +141,7 @@ class ALFACoins:
         """
         Get all gate fees for deposit and withdrawal
 
-        :returns: {
+        v:returns: {
             "bitcoin": {
                 "deposit": {
                     "commission": "0.99%",
@@ -167,6 +167,8 @@ class ALFACoins:
         """
         BitSend primary use to payout salaries for staff or making direct
             deposits to different cryptocurrency addresses
+
+
         :param type: Cryptocurrency to pay with
         :param options: (array) Client cryptocurrency address for deposit,
             and additional tags i.e.
@@ -185,11 +187,9 @@ class ALFACoins:
             (optional)
         :param recipient_name: Client Name (for email notification)
         :param recipient_email: Client email (for email notification)
-        :param reference: Deposit description (for client notification)   
-       
-        :returns: {
-            "id": "1"
-        }
+        :param reference: Deposit description (for client notification)
+
+        :returns: {"id": "1"}
 
         :raises ServerException: Internal server error
         :raises APIException: Related error message
@@ -214,7 +214,7 @@ class ALFACoins:
         BitSend status primary use to get information of bitsend payout
 
         :params bitsend_id: (int) Bitsend ID
-        
+
         :returns: {
             "status": "paid",
             "coin_amount": "0.40803893",
@@ -232,13 +232,13 @@ class ALFACoins:
             json_data=dict(bitsend_id = bitsend_id),
         )
 
-    def create_order(self, type, amount, order_id, options, currency=None,
-            description=None):
+    def create_order(self, type, amount, order_id, options, description,
+                     currency=None):
         """
         Create order for payment
 
         :param order_id: Merchant's Order ID
-        :param description: (Optional) Description for order
+        :param description: Description for order
         :param options: (Optional) Array {
                 "notificationURL": "[custom Merchant's URL for paymentnotification]
                 ",
@@ -247,7 +247,7 @@ class ALFACoins:
                 "payerName": "[Customer's name for notification]",
                 "payerEmail": "[Customer's email for notification]"
             }
-        
+
         :returns: {
             'id': '1',
             'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
@@ -278,7 +278,7 @@ class ALFACoins:
         Get status of created Order
 
         :param txn_id: ALFAcoins TXN ID
-        
+
         :returns: {
             'status': 'paid',
             'deposit': {
@@ -303,27 +303,26 @@ class ALFACoins:
         return self._request('POST', 'status', json_data=dict(txn_id=txn_id))
 
     def statistics(self):
-        """
-        Merchant's volume and balance statistics
-                
+        """Merchant's volume and balance statistics
+
         :returns: {
-            'balances':{
-                'BCH':'0.00000000',
-                'BTC':'0.00000000',
-                'DASH':'0.00000000',
-                'ETH':'0.00000000',
-                'LTC':'0.00000000',
-                'LTCT':'0.00001188',
-                'XRP':'0.00000000'
+            'balances': {
+            'BCH':'0.00000000',
+            'BTC':'0.00000000',
+            'DASH':'0.00000000',
+            'ETH':'0.00000000',
+            'LTC':'0.00000000',
+            'LTCT':'0.00001188',
+            'XRP':'0.00000000'
             },
-            'volume':1.2,
+            volume':1.2,
             'pending':0
         }
 
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
-        
+
         return self._request('POST', 'stats')
 
     def refund(self, txn_id, options={}, address='', amount=None,
@@ -348,7 +347,7 @@ class ALFACoins:
             less Order amount, If omitted full amount will be refunded
         :param new_rate: (Optional) Use current time rates for fiat to
             cryptocurrency conversion or use order's rate
-                        
+
         :returns: {'result': 'Refund is pending'}
 
         :raises ServerException: Internal server error
