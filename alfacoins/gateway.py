@@ -45,13 +45,13 @@ class ALFACoins:
 
     def __request(self, method, uri, params=None, json_data=None):
         url = urljoin(self.base_url, uri)
-        response =  request(
+        response = request(
             method=method,
             url=url,
             params=params,
             json=json_data
         )
-        return response.content.decode('utf-8') ,response.status_code
+        return response.content.decode('utf-8'), response.status_code
 
     def _request(self, method, uri, params=dict(), json_data=dict()):
         if self._is_authenticated:
@@ -229,7 +229,7 @@ class ALFACoins:
         return self._request(
             'POST',
             'bitsend_status',
-            json_data=dict(bitsend_id = bitsend_id),
+            json_data=dict(bitsend_id=bitsend_id),
         )
 
     def create_order(self, type, amount, order_id, options, description,
