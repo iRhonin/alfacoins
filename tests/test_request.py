@@ -30,21 +30,21 @@ class TestRequest:
 
     def test_request(self):
         with alfacoins_mockup_gateway(Root()) as gateway:
-            result = gateway.request('GET', 'GET-test')
+            result = gateway._request('GET', 'GET-test')
             assert result == dict(get='GET')
 
-            result = gateway.request('POST', 'POST-test', json_data=dict(a='a'))
+            result = gateway._request('POST', 'POST-test', json_data=dict(a='a'))
             assert result['a'] == 'a'
 
             with pytest.raises(ServerException):
-                gateway.request(
+                gateway._request(
                     'POST',
                     'POST-test',
                     json_data=dict(a='server error')
                 )
 
             with pytest.raises(APIException):
-                gateway.request(
+                gateway._request(
                     'POST',
                     'POST-test',
                     json_data=dict(a='api error')

@@ -34,7 +34,7 @@ def test_bitsend():
                 options={'address': '3P3QsMVK89JBNqZQv5zMAKG8FK3kJM4rjt'},
                 recipient_email='abc@abc.com',
                 reference=1,
-           )
+            )
 
 
 BITSEND_RESPONSE = {'id': '1'}
