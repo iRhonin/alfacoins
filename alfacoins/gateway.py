@@ -12,8 +12,8 @@ class ALFACoins:
     Gateway class
 
     """
-    def __init__(self, name=None, secret_key=None, password=None,
-                 base_url='https://www.alfacoins.com/api/'):
+    def __init__(self, name: str = None, secret_key: str = None, password: str = None,
+                 base_url: str = 'https://www.alfacoins.com/api/'):
         """
         :param name: Shop Name of API which you assigned when you create the
             API
@@ -25,25 +25,25 @@ class ALFACoins:
         """
 
         self.base_url = base_url
-        self._is_authenticated = False
-
-        if name and secret_key and password:
-            self._is_authenticated = True
-            self.name = name
-            self.secret_key = secret_key
-            self.password = password
+        self.name = name
+        self.secret_key = secret_key
+        self.password = password
 
     @property
     def password(self):
         return self._encoded_password
 
     @password.setter
-    def password(self, raw_password):
+    def password(self, raw_password: str):
         self._encoded_password = md5(raw_password.encode('utf-8')) \
             .hexdigest() \
             .upper()
 
-    def __request(self, method, uri, params=None, json_data=None):
+    @property
+    def is_authenticated(self):
+        return bool(self.name and self.password and self.secret_key)
+
+    def _http_requste(self, method: str, uri: str, params: dict = dict(), json_data: dict = dict()):
         url = urljoin(self.base_url, uri)
         response = request(
             method=method,
@@ -53,7 +53,7 @@ class ALFACoins:
         )
         return response.content.decode('utf-8'), response.status_code
 
-    def _request(self, method, uri, params=dict(), json_data=dict()):
+    def _request(self, method: str, uri: str, params: dict = dict(), json_data: dict = dict()):
         if self._is_authenticated:
             json_data.update(
                 name=self.name,
@@ -61,7 +61,7 @@ class ALFACoins:
                 password=self.password
             )
 
-        result, status_code = self.__request(
+        result, status_code = self._http_requste(
             method=method,
             uri=uri,
             params=params,
@@ -86,50 +86,15 @@ class ALFACoins:
         """
         Get rate for all available pairs
 
-        :returns: {
-            "BTC": [
-              {
-                "code": "USD",
-                "rate": 628.54
-              },
-              {
-                "code": "EUR",
-                "rate": 579.940948
-              }
-            ],
-            "LTC": [
-              {
-                "code": "USD",
-                "rate": 3.76613
-              },
-              {
-                "code": "EUR",
-                "rate": 3.474931
-              }
-            ],
-            "ETH": [
-              {
-                "code": "USD",
-                "rate": 12
-              },
-              {
-                "code": "EUR",
-                "rate": 11.072154
-              }
-            ]
-        }
-
         :raises ServerException: Internal server error
         """
         return self._request('GET', 'rates')
 
-    def get_rate(self, pair):
+    def get_rate(self, pair: str):
         """
         Get rate for pair
 
         :param pair: Cryptocurrency and fiat Pair
-
-        :returns: ["628.51000000"]
 
         :raises ServerException: Internal server error
         :raises APIException: Invalid pair
@@ -141,29 +106,13 @@ class ALFACoins:
         """
         Get all gate fees for deposit and withdrawal
 
-        v:returns: {
-            "bitcoin": {
-                "deposit": {
-                    "commission": "0.99%",
-                    "network_fee": "0 BTC"
-                },
-                "withdrawal": {
-                    "commission": "0%",
-                    "network_fee": "0.00011 BTC"
-                },
-                "bitsend": {
-                    "commission": "0.99%",
-                    "network_fee": "0.00011 BTC"
-                }
-            }
-        }
-
         :raises ServerException: Internal server error
         """
         return self._request('GET', 'fees')
 
-    def bitsend(self, type, options, recipient_email=None, amount=None,
-            coin_amount=None, recipient_name=None, reference=None):
+    def bitsend(self, type: str, options: dict, recipient_email: str = None, 
+                amount: str = None, coin_amount: str = None, 
+                recipient_name: str = None, reference: str = None):
         """
         BitSend primary use to payout salaries for staff or making direct
             deposits to different cryptocurrency addresses
@@ -189,8 +138,6 @@ class ALFACoins:
         :param recipient_email: Client email (for email notification)
         :param reference: Deposit description (for client notification)
 
-        :returns: {"id": "1"}
-
         :raises ServerException: Internal server error
         :raises APIException: Related error message
 
@@ -215,14 +162,6 @@ class ALFACoins:
 
         :params bitsend_id: (int) Bitsend ID
 
-        :returns: {
-            "status": "paid",
-            "coin_amount": "0.40803893",
-            "rate": "6000",
-            "type": "bitcoin",
-            "txid": "4cac7b450831fadd8c6921a6549832cb2b954c97ce45daa19306c0de259cdf86"
-        }
-
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -232,8 +171,8 @@ class ALFACoins:
             json_data=dict(bitsend_id=bitsend_id),
         )
 
-    def create_order(self, type, amount, order_id, options, description,
-                     currency=None):
+    def create_order(self, type: str, amount, order_id: float, options: dict, description: str,
+                     currency: str = None):
         """
         Create order for payment
 
@@ -248,18 +187,6 @@ class ALFACoins:
                 "payerEmail": "[Customer's email for notification]"
             }
 
-        :returns: {
-            'id': '1',
-            'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
-            'deposit': {
-                'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
-                'destination_tag': '1294967290',
-            },
-            'coin_amount': '1.234',
-            'url': 'test-url',
-            'iframe': 'test-url'
-        }
-
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
@@ -273,29 +200,11 @@ class ALFACoins:
         )
         return self._request('POST', 'create', json_data=data)
 
-    def order_status(self, txn_id):
+    def order_status(self, txn_id: int):
         """
         Get status of created Order
 
         :param txn_id: ALFAcoins TXN ID
-
-        :returns: {
-            'status': 'paid',
-            'deposit': {
-                'address': 'rExZpwNwwrmFWbX81AqbKJYkq8W6ZoeWE6',
-                'destination_tag': '1294967290',
-            },
-            'coin_requested_amount': '1.23',
-            'requested_amount': '12.3',
-            'amount': '1.2',
-            'rate': '10',
-            'coin_amount': '10',
-            'currency': 'USD',
-            'type': 'bitcoin',
-            'date': '2018-11-11T13:54:06.127610',
-            'url': 'test-url',
-            'iframe': 'test-url'
-        }
 
         :raises ServerException: Internal server error
         :raises APIException: Related error message
@@ -305,28 +214,14 @@ class ALFACoins:
     def statistics(self):
         """Merchant's volume and balance statistics
 
-        :returns: {
-            'balances': {
-            'BCH':'0.00000000',
-            'BTC':'0.00000000',
-            'DASH':'0.00000000',
-            'ETH':'0.00000000',
-            'LTC':'0.00000000',
-            'LTCT':'0.00001188',
-            'XRP':'0.00000000'
-            },
-            volume':1.2,
-            'pending':0
-        }
-
         :raises ServerException: Internal server error
         :raises APIException: Related error message
         """
 
         return self._request('POST', 'stats')
 
-    def refund(self, txn_id, options={}, address='', amount=None,
-               new_rate=False):
+    def refund(self, txn_id: int, options: dict = dict(), address: str = '', 
+               amount: float = None, new_rate: bool = False):
         """
         Refund completed order
 
@@ -347,8 +242,6 @@ class ALFACoins:
             less Order amount, If omitted full amount will be refunded
         :param new_rate: (Optional) Use current time rates for fiat to
             cryptocurrency conversion or use order's rate
-
-        :returns: {'result': 'Refund is pending'}
 
         :raises ServerException: Internal server error
         :raises APIException: Related error message
