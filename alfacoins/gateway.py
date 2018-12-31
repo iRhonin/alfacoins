@@ -54,7 +54,7 @@ class ALFACoins:
         return response.content.decode('utf-8'), response.status_code
 
     def _request(self, method: str, uri: str, params: dict = dict(), json_data: dict = dict()):
-        if self._is_authenticated:
+        if self.is_authenticated:
             json_data.update(
                 name=self.name,
                 secret_key=self.secret_key,
