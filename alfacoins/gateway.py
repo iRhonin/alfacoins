@@ -88,7 +88,7 @@ class ALFACoins:
 
         :raises ServerException: Internal server error
         """
-        return self._request('GET', 'rates')
+        return self._request('GET', 'rates.dict')
 
     def get_rate(self, pair: str):
         """
