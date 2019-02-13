@@ -100,7 +100,7 @@ class ALFACoins:
         :raises APIException: Invalid pair
 
         """
-        return self._request('GET', f'rate/{pair}')
+        return self._request('GET', f'rate/{pair}')[0]
 
     def get_fees(self):
         """

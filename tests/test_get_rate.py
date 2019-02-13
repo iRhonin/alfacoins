@@ -24,7 +24,7 @@ class Root(RegexRouteController):
 def test_get_rates():
     with unauthorized_alfacoins_mockup_gateway(Root()) as gateway:
         rates = gateway.get_rate('BTC_USD')
-        assert rates == GET_BTC_USD_RATE_RESPONSE
+        assert rates == GET_BTC_USD_RATE_RESPONSE[0]
 
         with pytest.raises(APIException):
             gateway.get_rate('invalid-pair')
