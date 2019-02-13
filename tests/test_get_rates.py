@@ -1,7 +1,7 @@
 
 from nanohttp import RegexRouteController, json
 
-from .helper import alfacoins_mockup_gateway
+from .helper import unauthorized_alfacoins_mockup_gateway
 
 
 class Root(RegexRouteController):
@@ -16,7 +16,7 @@ class Root(RegexRouteController):
 
 
 def test_get_rates():
-    with alfacoins_mockup_gateway(Root()) as gateway:
+    with unauthorized_alfacoins_mockup_gateway(Root()) as gateway:
         rates = gateway.get_rates()
         assert rates == GET_RATES_RESPONSE
 

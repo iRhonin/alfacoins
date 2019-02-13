@@ -12,7 +12,7 @@ class ALFACoins:
     Gateway class
 
     """
-    def __init__(self, name: str = None, secret_key: str = None, password: str = None,
+    def __init__(self, name: str = '', secret_key: str = '', password: str = '',
                  base_url: str = 'https://www.alfacoins.com/api/'):
         """
         :param name: Shop Name of API which you assigned when you create the
