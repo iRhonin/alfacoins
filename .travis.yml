@@ -1,20 +1,29 @@
 env:
   global:
-    - COMMIT_AUTHOR_EMAIL: arash.fattahzade@carrene.com
+  - COMMIT_AUTHOR_EMAIL: arash.fattahzade@carrene.com
 language: python
 dist: trusty
-python: "3.6"
+python: '3.6'
 branches:
   only:
   - master
   - nightly
-  - /^v([1-9]\d*!)?(0|[1-9]\d*)(\.(0|[1-9]\d*))*((a|b|rc)(0|[1-9]\d*))?(\.post(0|[1-9]\d*))?(\.dev(0|[1-9]\d*))?$/
+  - "/^v([1-9]\\d*!)?(0|[1-9]\\d*)(\\.(0|[1-9]\\d*))*((a|b|rc)(0|[1-9]\\d*))?(\\.post(0|[1-9]\\d*))?(\\.dev(0|[1-9]\\d*))?$/"
 addons:
   apt:
     packages:
-      - libpq-dev
-
-install: ./scripts/travis-install.sh
+    - libpq-dev
+install: "./scripts/travis-install.sh"
 script: py.test --cov=alfacoins
-after_success: 
-  - travis_retry coveralls
+after_success: travis_retry coveralls
+deploy:
+  provider: pypi
+  user: Rhonin
+  skip_cleanup: true
+  password:
+    secure: H2fVNcYue0nA3dIlzg4Gidp1nzlZUd1YvCo8XeHmDL5JSjer22ID7828AG7m04e2cmhN/wgIomEGtVUGAq/p6tcVCktbZ9+wcZ8vtq5Cr4rHVjiooRPqFppDsI1JJkfSvmY1+rKVtsUFn+GlRQEvS36u5YCxa8ZT8i4I1PL2c2KMCL2m+/I0B7jtXKdG6Ngq/Ng9MgP/UFu0Lwtr4A3EgE9ms+vTEK+dAQEU4bH0KTMRzoURz3wkuSIWOXu7RqgfIVkXrntLJcK8/6CskTGb7go8XSVthzrGjeBkg9ncKrxEqZOFoOQimEmYfrRWMM29J1QwJnNGihSdAsRJCDTCAn4Zv0Uc/SkRuX6064VzWxscjNuHEgbQ+0gzJFRou9ftuog/4viW6f11iUMulhF1U0ReM9rGG2+hxiPxEfCpRsCrgoSttJooSUmWLFBa/hDXWAjv7BrfqbWpymXuSwq06UDqMU9iwgpyYAVCi/jj9ul72FcFvonPf4jqrqz9Aw9JYeHxE5PooOn1gviSuWbyA8SmOQ4F6KjY7vG35cDxyR3ywEE8izlDsBnPwcz+suHwnN6J85GsLvHiN0p+Jtcq6mzAPB3HG1wEAC0qKvI3tUPVpT5Hv9+YuMf2nIe+FOCXfD0E/lpF+sVHo5qD/HFzEUqH9UrMgWebuqtZHABdjbU=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: ArashFatahzade/alfacoins
+    condition: "$TRAVIS_PYTHON_VERSION = 3.6"
