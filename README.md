@@ -36,11 +36,8 @@ by [Carrene](https://github.com/Carrene).
 
 ## Installation
 
-For now, clone the source and install it by pip3.6:
-
 ```bash
-cd <source code path>
-pip3.6 install .
+pip3.6 install alfacoins
 ```
 
 ## Getting Started
