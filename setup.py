@@ -22,6 +22,8 @@ setup(
     author="Arash Fatahzadea",
     author_email="arash.fattahzade@carrene.com",
     description="ALFACoins API library",
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',  # This is important!
     url='https://github.com/Carrene/owl.git://github.com/ArashFatahzade/alfacoins',
     install_requires=dependencies,
     packages=find_packages(),
