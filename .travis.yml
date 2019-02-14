@@ -20,8 +20,7 @@ deploy:
   provider: pypi
   user: Rhonin
   skip_cleanup: true
-  password:
-    secure: kH5+6/lTbpxtNtXJrNIiGnAg3qc++rvS5LXbVtWECWgegzVt3gj8uQM8IBkfMHnpubQh7vlUCTQ7OxydRBTflNMuMsgLxQJ1exb90az3R38cUntC+7mvmpGzBiZ3p2KGIf72RTXzPOpqJCVpSfuD4FFrmCQ4rwzJRSAg7tO8kpKucFd9GT94pZF3MSGNiKdBV+/vum6zNEB91tNqKq8AG3b+frUrdrMKWbSASbU9L99oebM4fr2aLFzcbgfwFBPgjNsuSXmdEzzsmUGpbQd0thFRmavDFmC75jJ2Ae7DgLmg8XVWF5Y3bfetHgoSppILnUbZo+6GhLXvwZyNjwC0KJV2+A34Dvb789WM+nDgC8hKDc3g3DAi1pagF85zAq1UCTDM4BmdFWkV97tBIFwUBzpiBH//m2Gpit2ifC2f9ycO/LVubZGdLWQBEzm7p1wxP029pwFFA2yUpisnEePjhjdzVdLoIDRd8TELGDGJBopzw0GiuP5k3SjX6gtHujmOuk4wFCaWcGOZclpq+Uoh+oYLrjXvSrBht9B2vraCXtxx94ivbdhr/dyfdF3yKt9kzKaIXkotbwnMmXxk9d1gXMlNZUcB+wOw1Q6BT5qLU6CREv1xE14I114aDRz0QdspjSGWSrhZwxvrBZNfOGNK8t6mn3B557z1Z1BjyMEh6oE=
+  password: Mitik0man
   on:
     tags: true
     distributions: sdist bdist_wheel
