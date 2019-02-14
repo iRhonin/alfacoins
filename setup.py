@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     test_suite="tests",
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Intended Audience :: Customer Service',
         'License :: OSI Approved :: MIT License',
@@ -35,8 +35,6 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 3.6',
-        'Topic :: Software Development',
-        'Topic :: Libraries :: Python Modules',
-
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
