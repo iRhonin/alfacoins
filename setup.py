@@ -28,6 +28,7 @@ setup(
     install_requires=dependencies,
     packages=find_packages(),
     test_suite="tests",
+    license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
