@@ -19,12 +19,12 @@ dependencies = [
 setup(
     name="alfacoins",
     version=package_version,
-    author="Arash Fatahzadea",
-    author_email="arash.fattahzade@carrene.com",
+    author="Arash Fatahzade",
+    author_email="fatahzade@gmail.com",
     description="ALFACoins API library",
     long_description=open('README.md').read(),
-    long_description_content_type='text/markdown',  # This is important!
-    url='https://github.com/Carrene/owl.git://github.com/ArashFatahzade/alfacoins',
+    long_description_content_type='text/markdown',
+    url='https://github.com/ArashFatahzade/alfacoins',
     install_requires=dependencies,
     packages=find_packages(),
     test_suite="tests",
